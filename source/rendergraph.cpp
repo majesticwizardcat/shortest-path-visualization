@@ -21,8 +21,8 @@ int main(int args, char** argv) {
 	int windowWidth = atoi(argv[3]);
 	int windowHeight = atoi(argv[4]);
 	float nodePixels = atof(argv[5]);
-	int start = atoi(argv[6]);
-	int end = atoi(argv[7]);
+	int start = atoi(argv[6]) - 1;
+	int end = atoi(argv[7]) - 1;
 	int numOfAlgs = 3;
 
 	NodeColors dcolors(sf::Color(40, 50, 125), sf::Color(130, 145, 230), sf::Color(170, 180, 230));
