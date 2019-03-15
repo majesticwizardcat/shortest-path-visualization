@@ -11,7 +11,7 @@ void Node::remapLocation(int minX, int minY, int maxX, int maxY,
 		int nMinX, int nMinY, int nMaxX, int nMaxY) {
 
 	x = nMinX + (nMaxX - nMinX) * (float) ((float) (x - minX) / (float) (maxX - minX));
-	y = nMinY + (nMaxY - nMinY) * (float) ((float) (y - minY) / (float) (maxY - minY));
+	y = (nMaxY) - (nMinY + (nMaxY - nMinY) * (float) ((float) (y - minY) / (float) (maxY - minY)));
 }
 
 bool Node::equals(Node& other) {
