@@ -42,30 +42,32 @@ void P2PAlgorithm::step() {
 	m_Q.pop();
 	m_nodesVisited++;
 	m_curNodeVisiting = cur.graphNodeID;
-	
-	VisitNode vn;
-	vn.nodeID = cur.graphNodeID;
-	vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
-	m_visited.push_back(vn);
 
-	if (cur.graphNodeID == m_end) {
-		m_ended = true;
-		m_foundPath = true;
+	if (std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID) == m_visited.end()) {
+		VisitNode vn;
+		vn.nodeID = cur.graphNodeID;
+		vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
+		m_visited.push_back(vn);
 
-		m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-		return;
-	}
+		if (cur.graphNodeID == m_end) {
+			m_ended = true;
+			m_foundPath = true;
 
-	for (Edge& e : (m_graph->getNode(cur.graphNodeID)).edges) {
-		if (std::find(m_visited.begin(), m_visited.end(), e.to) == m_visited.end()) {
-			SearchNode sn;
-			sn.graphNodeID = e.to;
-			sn.totalCost = cur.totalCost + e.weight;
-			sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
-					m_graph->getNode(m_start), m_graph->getNode(m_end));
-			sn.currentPath.insert(sn.currentPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-			sn.currentPath.push_back(e.to);
-			m_Q.push(sn);
+			m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
+			return;
+		}
+
+		for (Edge& e : (m_graph->getNode(cur.graphNodeID)).edges) {
+			if (std::find(m_visited.begin(), m_visited.end(), e.to) == m_visited.end()) {
+				SearchNode sn;
+				sn.graphNodeID = e.to;
+				sn.totalCost = cur.totalCost + e.weight;
+				sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
+						m_graph->getNode(m_start), m_graph->getNode(m_end));
+				sn.currentPath.insert(sn.currentPath.end(), cur.currentPath.begin(), cur.currentPath.end());
+				sn.currentPath.push_back(e.to);
+				m_Q.push(sn);
+			}
 		}
 	}
 }
