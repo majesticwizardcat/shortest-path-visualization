@@ -15,6 +15,7 @@ public:
 	int rx;
 	int ry;
 	std::vector<Edge> edges;
+	std::vector<Edge> invertedEdges;
 	
 	Node() : id(-1) { }
 	Node(int id, int x, int y) : id(id), x(x), y(y),
@@ -27,6 +28,7 @@ public:
 	bool operator==(Node& other);
 	bool operator!=(Node& other);
 	bool hasEdge(Edge& e);
+	bool hasInvertedEdge(Edge& e);
 
 	int distance(Node& other);
 	int realDistance(Node& other);

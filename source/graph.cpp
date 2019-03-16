@@ -36,6 +36,16 @@ bool Node::hasEdge(Edge& e) {
 	return false;
 }
 
+bool Node::hasInvertedEdge(Edge& e) {
+	for (Edge& d : invertedEdges) {
+		if (d.to == e.to) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 int Node::distance(Node& other) {
 	return sqrt(pow(x - other.x, 2) + pow(y - other.y, 2));
 }
@@ -107,11 +117,17 @@ void Graph::loadGraph(char* nodesFileLocation, char* edgesFileLocation) {
 			edgesFile >> t;
 			edgesFile >> w;
 			Node& from = m_nodes[f - 1];
+			Node& inverse = m_nodes[t - 1];
 			Edge e(t - 1, w);
+			Edge ie(f - 1, w);
 
 			if (!from.hasEdge(e)) {
 				from.edges.push_back(e);
 				edges++;
+			}
+
+			if (!inverse.hasInvertedEdge(ie)) {
+				inverse.invertedEdges.push_back(ie);
 			}
 		}
 	}

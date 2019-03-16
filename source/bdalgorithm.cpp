@@ -96,7 +96,7 @@ void BDAlgorithm::step() {
 		}
 	}
 
-	for (Edge& e : (m_graph->getNode(endCur.graphNodeID)).edges) {
+	for (Edge& e : (m_graph->getNode(endCur.graphNodeID)).invertedEdges) {
 		if (std::find(m_endVisited.begin(), m_endVisited.end(), e.to) == m_endVisited.end()) {
 			SearchNode sn;
 			sn.graphNodeID = e.to;
