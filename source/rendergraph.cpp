@@ -30,8 +30,8 @@ int main(int args, char** argv) {
 	NodeColors bdcolors(sf::Color(120, 155, 20), sf::Color(220, 250, 120), sf::Color(250, 255, 150));
 
 	Algorithm** algorithms = new Algorithm*[numOfAlgs];
-	algorithms[0] = new P2PAlgorithm("A*", astar, ascolors);
-	algorithms[1] = new P2PAlgorithm("Dijkstra", dijkstra, dcolors);
+	algorithms[0] = new P2PAlgorithm("Dijkstra", dijkstra, dcolors);
+	algorithms[1] = new P2PAlgorithm("A*", astar, ascolors);
 	algorithms[2] = new BDAlgorithm("BD-Dijkstra", dijkstra, bdcolors);
 
 	Renderer r(windowWidth, windowHeight, nodePixels);

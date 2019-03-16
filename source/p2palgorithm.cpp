@@ -24,6 +24,7 @@ void P2PAlgorithm::startRunning(Graph* g, int start, int end) {
 	n.graphNodeID = start;
 	n.currentPath.push_back(start);
 	n.totalCost = 0;
+	n.PQCost = 0;
 	m_Q.push(n);
 	m_curNodeVisiting = start;
 	m_lastNodeVisited = start;
