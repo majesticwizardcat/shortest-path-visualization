@@ -40,6 +40,11 @@ protected:
 	Graph* m_graph;
 	NodeColors m_colors;
 
+	bool visitNode(SearchNode& cur, std::vector<VisitNode>& visited, int end);
+
+	void expandSearchFront(SearchNode& cur,
+		std::vector<Edge>& edges, std::vector<VisitNode>& visited,
+		std::priority_queue<SearchNode>& Q, int start, int end);
 public:
 	P2PAlgorithm(const char* name, costFunction_t costFunc, NodeColors colors);
 

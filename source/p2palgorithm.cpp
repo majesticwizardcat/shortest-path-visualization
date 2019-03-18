@@ -30,6 +30,48 @@ void P2PAlgorithm::startRunning(Graph* g, int start, int end) {
 	m_lastNodeVisited = start;
 }
 
+bool P2PAlgorithm::visitNode(SearchNode& cur, std::vector<VisitNode>& visited,
+		int end) {
+
+	if (std::find(visited.begin(), visited.end(), cur.graphNodeID) == visited.end()) {
+		VisitNode vn;
+		vn.nodeID = cur.graphNodeID;
+		vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
+		visited.push_back(vn);
+		m_nodesVisited++;
+
+		if (cur.graphNodeID == end) {
+			m_ended = true;
+			m_foundPath = true;
+
+			m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
+			return false;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void P2PAlgorithm::expandSearchFront(SearchNode& cur,
+		std::vector<Edge>& edges, std::vector<VisitNode>& visited,
+		std::priority_queue<SearchNode>& Q, int start, int end) {
+
+	for (Edge& e : edges) {
+		if (std::find(visited.begin(), visited.end(), e.to) == visited.end()) {
+			SearchNode sn;
+			sn.graphNodeID = e.to;
+			sn.totalCost = cur.totalCost + e.weight;
+			sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
+					m_graph->getNode(start), m_graph->getNode(end));
+			sn.currentPath.insert(sn.currentPath.end(), cur.currentPath.begin(), cur.currentPath.end());
+			sn.currentPath.push_back(e.to);
+			Q.push(sn);
+		}
+	}
+}
+
 void P2PAlgorithm::step() {
 	m_lastNodeVisited = m_curNodeVisiting;
 	
@@ -43,33 +85,11 @@ void P2PAlgorithm::step() {
 	m_Q.pop();
 	m_curNodeVisiting = cur.graphNodeID;
 
-	if (std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID) == m_visited.end()) {
-		VisitNode vn;
-		vn.nodeID = cur.graphNodeID;
-		vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
-		m_visited.push_back(vn);
-		m_nodesVisited++;
+	if (visitNode(cur, m_visited, m_end)) {
+		Node n = m_graph->getNode(cur.graphNodeID);
 
-		if (cur.graphNodeID == m_end) {
-			m_ended = true;
-			m_foundPath = true;
-
-			m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-			return;
-		}
-
-		for (Edge& e : (m_graph->getNode(cur.graphNodeID)).edges) {
-			if (std::find(m_visited.begin(), m_visited.end(), e.to) == m_visited.end()) {
-				SearchNode sn;
-				sn.graphNodeID = e.to;
-				sn.totalCost = cur.totalCost + e.weight;
-				sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
-						m_graph->getNode(m_start), m_graph->getNode(m_end));
-				sn.currentPath.insert(sn.currentPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-				sn.currentPath.push_back(e.to);
-				m_Q.push(sn);
-			}
-		}
+		expandSearchFront(cur, n.edges, m_visited,
+				m_Q, m_start, m_end);
 	}
 }
 

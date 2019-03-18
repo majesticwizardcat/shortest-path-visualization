@@ -23,25 +23,14 @@ void BDAlgorithm::step() {
 		return;
 	}
 
+	SearchNode cur;
+
 	if (m_Q.top().PQCost < m_endQ.top().PQCost) {
-		SearchNode cur = m_Q.top();
+		cur = m_Q.top();
 		m_Q.pop();
-		m_curNodeVisiting = cur.graphNodeID;
 
-		if (std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID) == m_visited.end()) {
-			VisitNode vn;
-			vn.nodeID = cur.graphNodeID;
-			vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
-			m_visited.push_back(vn);
-			m_nodesVisited++;
-
-			if (cur.graphNodeID == m_end) {
-				m_ended = true;
-				m_foundPath = true;
-
-				m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-				return;
-			}
+		if (visitNode(cur, m_visited, m_end)) {
+			Node n = m_graph->getNode(cur.graphNodeID);
 
 			std::vector<VisitNode>::iterator it = std::find(m_endVisited.begin(), m_endVisited.end(), cur.graphNodeID);
 
@@ -53,67 +42,34 @@ void BDAlgorithm::step() {
 				m_shortestPath.insert(m_shortestPath.end(), (*it).path.begin(), (*it).path.end());
 				return;
 			}
-
-			for (Edge& e : (m_graph->getNode(cur.graphNodeID)).edges) {
-				if (std::find(m_visited.begin(), m_visited.end(), e.to) == m_visited.end()) {
-					SearchNode sn;
-					sn.graphNodeID = e.to;
-					sn.totalCost = cur.totalCost + e.weight;
-					sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
-							m_graph->getNode(m_start), m_graph->getNode(m_end));
-					sn.currentPath.insert(sn.currentPath.end(), cur.currentPath.begin(), cur.currentPath.end());
-					sn.currentPath.push_back(e.to);
-					m_Q.push(sn);
-				}
-			}
+			
+			expandSearchFront(cur, n.edges, m_visited, m_Q, m_start, m_end);
 		}
 	}
-
+	
 	else {
-		SearchNode endCur = m_endQ.top();
+		cur = m_endQ.top();
 		m_endQ.pop();
-		m_curNodeVisiting = endCur.graphNodeID;
 
-		if (std::find(m_endVisited.begin(), m_endVisited.end(), endCur.graphNodeID) == m_endVisited.end()) {
-			VisitNode endVn;
-			endVn.nodeID = endCur.graphNodeID;
-			endVn.path.insert(endVn.path.end(), endCur.currentPath.begin(), endCur.currentPath.end());
-			m_endVisited.push_back(endVn);
-			m_nodesVisited++;
+		if (visitNode(cur, m_endVisited, m_start)) {
+			Node n = m_graph->getNode(cur.graphNodeID);
 
-			if (endCur.graphNodeID == m_start) {
-				m_ended = true;
-				m_foundPath = true;
-
-				m_shortestPath.insert(m_shortestPath.end(), endCur.currentPath.begin(), endCur.currentPath.end());
-				return;
-			}
-
-			std::vector<VisitNode>::iterator it = std::find(m_visited.begin(), m_visited.end(), endCur.graphNodeID);
+			std::vector<VisitNode>::iterator it = std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID);
 
 			if (it != m_visited.end()) {
 				m_ended = true;
 				m_foundPath = true;
 
-				m_shortestPath.insert(m_shortestPath.end(), endCur.currentPath.begin(), endCur.currentPath.end());
+				m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
 				m_shortestPath.insert(m_shortestPath.end(), (*it).path.begin(), (*it).path.end());
 				return;
 			}
-
-			for (Edge& e : (m_graph->getNode(endCur.graphNodeID)).invertedEdges) {
-				if (std::find(m_endVisited.begin(), m_endVisited.end(), e.to) == m_endVisited.end()) {
-					SearchNode sn;
-					sn.graphNodeID = e.to;
-					sn.totalCost = endCur.totalCost + e.weight;
-					sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
-							m_graph->getNode(m_end), m_graph->getNode(m_start));
-					sn.currentPath.insert(sn.currentPath.end(), endCur.currentPath.begin(), endCur.currentPath.end());
-					sn.currentPath.push_back(e.to);
-					m_endQ.push(sn);
-				}
-			}
+			
+			expandSearchFront(cur, n.invertedEdges, m_endVisited, m_endQ, m_end, m_start);
 		}
 	}
+
+	m_curNodeVisiting = cur.graphNodeID;
 }
 
 void BDAlgorithm::end() {
