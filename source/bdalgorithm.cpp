@@ -29,7 +29,6 @@ void BDAlgorithm::step() {
 	if (m_Q.top().PQCost < m_endQ.top().PQCost) {
 		SearchNode cur = m_Q.top();
 		m_Q.pop();
-		m_nodesVisited++;
 		m_curNodeVisiting = cur.graphNodeID;
 
 		if (std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID) == m_visited.end()) {
@@ -37,6 +36,7 @@ void BDAlgorithm::step() {
 			vn.nodeID = cur.graphNodeID;
 			vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
 			m_visited.push_back(vn);
+			m_nodesVisited++;
 
 			if (cur.graphNodeID == m_end) {
 				m_ended = true;
@@ -75,7 +75,6 @@ void BDAlgorithm::step() {
 	else {
 		SearchNode endCur = m_endQ.top();
 		m_endQ.pop();
-		m_nodesVisited++;
 		m_endCurNodeVisiting = endCur.graphNodeID;
 
 		if (std::find(m_endVisited.begin(), m_endVisited.end(), endCur.graphNodeID) == m_endVisited.end()) {
@@ -83,6 +82,7 @@ void BDAlgorithm::step() {
 			endVn.nodeID = endCur.graphNodeID;
 			endVn.path.insert(endVn.path.end(), endCur.currentPath.begin(), endCur.currentPath.end());
 			m_endVisited.push_back(endVn);
+			m_nodesVisited++;
 
 			if (endCur.graphNodeID == m_start) {
 				m_ended = true;

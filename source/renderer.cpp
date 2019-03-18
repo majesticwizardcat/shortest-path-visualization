@@ -70,6 +70,12 @@ void Renderer::render(Graph& graph, Algorithm** algorithms, int numOfAlgs, int s
 		m_window->draw(c);
 
 		m_window->display();
+
+		std::cout << "\rNodes visited: ";
+		for (int i = 0; i < numOfAlgs; ++i) {
+			std::cout << "[" << algorithms[i]->getName() << " "
+				<< algorithms[i]->getNodesVisited() << "] ";
+		}
 	}
 }
 

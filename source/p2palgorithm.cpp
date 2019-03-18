@@ -41,7 +41,6 @@ void P2PAlgorithm::step() {
 
 	SearchNode cur = m_Q.top();
 	m_Q.pop();
-	m_nodesVisited++;
 	m_curNodeVisiting = cur.graphNodeID;
 
 	if (std::find(m_visited.begin(), m_visited.end(), cur.graphNodeID) == m_visited.end()) {
@@ -49,6 +48,7 @@ void P2PAlgorithm::step() {
 		vn.nodeID = cur.graphNodeID;
 		vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
 		m_visited.push_back(vn);
+		m_nodesVisited++;
 
 		if (cur.graphNodeID == m_end) {
 			m_ended = true;
