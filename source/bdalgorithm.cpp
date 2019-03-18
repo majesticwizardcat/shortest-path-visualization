@@ -12,13 +12,10 @@ void BDAlgorithm::startRunning(Graph* g, int start, int end) {
 	n.totalCost = 0;
 	n.PQCost = 0;
 	m_endQ.push(n);
-	m_endCurNodeVisiting = end;
-	m_endLastNodeVisited = end;
 }
 
 void BDAlgorithm::step() {
 	m_lastNodeVisited = m_curNodeVisiting;
-	m_endLastNodeVisited = m_endCurNodeVisiting;
 	
 	if (m_Q.size() == 0 || m_endQ.size() == 0) {
 		m_ended = true;
@@ -75,7 +72,7 @@ void BDAlgorithm::step() {
 	else {
 		SearchNode endCur = m_endQ.top();
 		m_endQ.pop();
-		m_endCurNodeVisiting = endCur.graphNodeID;
+		m_curNodeVisiting = endCur.graphNodeID;
 
 		if (std::find(m_endVisited.begin(), m_endVisited.end(), endCur.graphNodeID) == m_endVisited.end()) {
 			VisitNode endVn;
@@ -121,33 +118,5 @@ void BDAlgorithm::step() {
 
 void BDAlgorithm::end() {
 	P2PAlgorithm::end();
-}
-
-void BDAlgorithm::drawLastVisited(sf::RenderWindow* window, float nodeSize) {
-	P2PAlgorithm::drawLastVisited(window, nodeSize);
-
-	if (m_endLastNodeVisited == m_start || m_endLastNodeVisited == m_end) {
-		return;
-	}
-
-	Node last = m_graph->getNode(m_endLastNodeVisited);
-	sf::CircleShape c(nodeSize);
-	c.setFillColor(m_colors.visited);
-	c.setPosition(last.x, last.y);
-	window->draw(c);
-}
-
-void BDAlgorithm::drawCurrentVisiting(sf::RenderWindow* window, float nodeSize) {
-	P2PAlgorithm::drawCurrentVisiting(window, nodeSize);
-
-	if (m_endCurNodeVisiting == m_start || m_endCurNodeVisiting == m_end) {
-		return;
-	}
-
-	Node last = m_graph->getNode(m_endCurNodeVisiting);
-	sf::CircleShape c(nodeSize);
-	c.setFillColor(m_colors.current);
-	c.setPosition(last.x, last.y);
-	window->draw(c);
 }
 
