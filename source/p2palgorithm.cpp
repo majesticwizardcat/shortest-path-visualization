@@ -74,7 +74,8 @@ void P2PAlgorithm::step() {
 }
 
 void P2PAlgorithm::end() {
-
+	m_Q = std::priority_queue<SearchNode>();
+	m_visited.clear();
 }
 
 void P2PAlgorithm::drawLastVisited(sf::RenderWindow* window, float nodeSize) {

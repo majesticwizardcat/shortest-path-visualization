@@ -118,5 +118,7 @@ void BDAlgorithm::step() {
 
 void BDAlgorithm::end() {
 	P2PAlgorithm::end();
+	m_endQ = std::priority_queue<SearchNode>();
+	m_endVisited.clear();
 }
 
