@@ -10,6 +10,7 @@ class P2PAlgorithm;
 class VisitNode {
 public:
 	int nodeID;
+	int totalCost;
 	std::vector<int> path;
 
 	bool operator==(VisitNode& other) {
@@ -34,6 +35,7 @@ protected:
 	int m_nodesVisited;
 	int m_lastNodeVisited;
 	int m_curNodeVisiting;
+	int m_shortestPathCost;
 	bool m_ended;
 	bool m_foundPath;
 	costFunction_t m_costFunc;
@@ -60,9 +62,12 @@ public:
 	bool hasEnded() { return m_ended; }
 	bool foundPath() { return m_foundPath; }
 
+	RunStats runFull(Graph* g, int start, int end);
+
 	void startRunning(Graph* g, int start, int end);
 	void step();
 	void end();
+	void reset();
 	void drawLastVisited(sf::RenderWindow* window, float nodeSize);
 	void drawCurrentVisiting(sf::RenderWindow* window, float nodeSize);
 	void drawPath(sf::RenderWindow* window, float nodeSize);

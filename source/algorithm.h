@@ -5,16 +5,18 @@ class Algorithm;
 
 #include "graph.h"
 
-typedef int (* costFunction_t)(int searchNodeCost, Node current, Node start, Node end);
+typedef double (* costFunction_t)(double searchNodeCost, Node current, Node start, Node end);
 
+#include <iostream>
+#include <chrono>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
 class SearchNode {
 public:
 	int graphNodeID;
-	int totalCost;
-	int PQCost;
+	double totalCost;
+	double PQCost;
 	std::vector<int> currentPath;
 
 	bool friend operator<(const SearchNode& n0, const SearchNode& n1) {
@@ -32,6 +34,22 @@ public:
 		visited(visited), current(current), path(path) { }
 };
 
+class RunStats {
+public:
+	std::chrono::seconds time;
+	int nodesVisited;
+	int pathNodes;
+
+	double pathCost;
+
+	void print() {
+		std::cout << "Time: " << time.count() << " sec, "
+			<< "Nodes visited: " << nodesVisited << ", "
+			<< "Path cost: " << pathCost << ", "
+			<< "Path nodes: " << pathNodes << std::endl;
+	}
+};
+
 class Algorithm {
 public:
 	virtual NodeColors getNodeColors() = 0;
@@ -42,9 +60,11 @@ public:
 	virtual int getEnd() = 0;
 	virtual bool hasEnded() = 0;
 	virtual bool foundPath() = 0;
+	virtual RunStats runFull(Graph* g, int start, int end) = 0;
 	virtual void startRunning(Graph* g, int start, int end) = 0;
 	virtual void step() = 0;
 	virtual void end() = 0;
+	virtual void reset() = 0;
 	virtual void drawLastVisited(sf::RenderWindow* window, float nodeSize) = 0;
 	virtual void drawCurrentVisiting(sf::RenderWindow* window, float nodeSize) = 0;
 	virtual void drawPath(sf::RenderWindow* window, float nodeSize) = 0;

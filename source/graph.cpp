@@ -46,12 +46,22 @@ bool Node::hasInvertedEdge(Edge& e) {
 	return false;
 }
 
-int Node::distance(Node& other) {
+double Node::distance(Node& other) {
 	return sqrt(pow(x - other.x, 2) + pow(y - other.y, 2));
 }
 
-int Node::realDistance(Node& other) {
+double Node::realDistance(Node& other) {
 	return sqrt(pow(rx - other.rx, 2) + pow(ry - other.ry, 2));
+}
+
+double Node::manhattan(Node& other) {
+	return abs(rx - other.rx) + abs(ry - other.ry);
+}
+
+double Node::sphericalDistance(Node& other, int radius) {
+	double dl = abs(rx - other.rx);
+	double ds = acos(sin(ry) * sin(other.ry) + cos(ry) * cos(other.ry) * cos(dl));
+	return radius * ds;
 }
 
 Graph::Graph(char* nodesFileLocation, char* edgesFileLocation) {

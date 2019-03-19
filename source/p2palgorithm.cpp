@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <SFML/Graphics.hpp>
+#include <chrono>
 
 P2PAlgorithm::P2PAlgorithm(const char* name, costFunction_t costFunc, NodeColors colors) : 
 	m_costFunc(costFunc), m_colors(colors) {
@@ -14,6 +15,29 @@ P2PAlgorithm::P2PAlgorithm(const char* name, costFunction_t costFunc, NodeColors
 	m_ended = false;
 	m_foundPath = false;
 	m_nodesVisited = 0;
+}
+
+RunStats P2PAlgorithm::runFull(Graph* g, int start, int end) {
+	RunStats stats;
+
+	auto startTime = std::chrono::high_resolution_clock::now();
+	startRunning(g, start, end);
+
+	while (!m_ended) {
+		step();
+	}
+
+	auto stopTime = std::chrono::high_resolution_clock::now();
+
+	stats.time = std::chrono::duration_cast<std::chrono::seconds>(stopTime - startTime);
+	stats.nodesVisited = m_nodesVisited;
+	stats.pathCost = m_shortestPathCost;
+	stats.pathNodes = m_shortestPath.size();
+
+	P2PAlgorithm::end();
+	reset();
+
+	return stats;
 }
 
 void P2PAlgorithm::startRunning(Graph* g, int start, int end) {
@@ -37,6 +61,7 @@ bool P2PAlgorithm::visitNode(SearchNode& cur, std::vector<VisitNode>& visited,
 		VisitNode vn;
 		vn.nodeID = cur.graphNodeID;
 		vn.path.insert(vn.path.end(), cur.currentPath.begin(), cur.currentPath.end());
+		vn.totalCost = cur.totalCost;
 		visited.push_back(vn);
 		m_nodesVisited++;
 
@@ -45,6 +70,7 @@ bool P2PAlgorithm::visitNode(SearchNode& cur, std::vector<VisitNode>& visited,
 			m_foundPath = true;
 
 			m_shortestPath.insert(m_shortestPath.end(), cur.currentPath.begin(), cur.currentPath.end());
+			m_shortestPathCost = cur.totalCost;
 			return false;
 		}
 
@@ -96,6 +122,14 @@ void P2PAlgorithm::step() {
 void P2PAlgorithm::end() {
 	m_Q = std::priority_queue<SearchNode>();
 	m_visited.clear();
+}
+
+void P2PAlgorithm::reset() {
+	m_ended = false;
+	m_foundPath = false;
+	m_nodesVisited = 0;
+	m_shortestPath.clear();
+	m_shortestPathCost = 0;
 }
 
 void P2PAlgorithm::drawLastVisited(sf::RenderWindow* window, float nodeSize) {

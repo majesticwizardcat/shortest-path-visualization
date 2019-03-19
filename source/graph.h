@@ -30,14 +30,16 @@ public:
 	bool hasEdge(Edge& e);
 	bool hasInvertedEdge(Edge& e);
 
-	int distance(Node& other);
-	int realDistance(Node& other);
+	double distance(Node& other);
+	double realDistance(Node& other);
+	double manhattan(Node& other);
+	double sphericalDistance(Node& other, int radius);
 };
 
 class Edge {
 public:
 	int to;
-	int weight;
+	double weight;
 
 	Edge(int to, int weight) : to(to), weight(weight) { }
 };
