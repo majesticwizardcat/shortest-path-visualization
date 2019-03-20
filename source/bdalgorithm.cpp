@@ -24,8 +24,8 @@ void BDAlgorithm::startRunning(Graph* g, int start, int end) {
 RunStats BDAlgorithm::runFull(Graph* g, int start, int end) {
 	RunStats stats;
 
-	auto startTime = std::chrono::high_resolution_clock::now();
 	startRunning(g, start, end);
+	auto startTime = std::chrono::high_resolution_clock::now();
 
 	while (!m_ended) {
 		step();

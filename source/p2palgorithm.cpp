@@ -20,8 +20,8 @@ P2PAlgorithm::P2PAlgorithm(const char* name, costFunction_t costFunc, NodeColors
 RunStats P2PAlgorithm::runFull(Graph* g, int start, int end) {
 	RunStats stats;
 
-	auto startTime = std::chrono::high_resolution_clock::now();
 	startRunning(g, start, end);
+	auto startTime = std::chrono::high_resolution_clock::now();
 
 	while (!m_ended) {
 		step();
