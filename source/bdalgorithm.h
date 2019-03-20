@@ -5,7 +5,9 @@
 class BDAlgorithm : public P2PAlgorithm {
 protected:
 	std::priority_queue<SearchNode> m_endQ;
-	std::vector<VisitNode> m_endVisited;
+	bool* m_endVisited;
+	int* m_endPredecessors;
+	double* m_endCosts;
 
 	void finalize();
 

@@ -15,9 +15,9 @@ typedef double (* costFunction_t)(double searchNodeCost, Node current, Node star
 class SearchNode {
 public:
 	int graphNodeID;
+	int predecessor;
 	double totalCost;
 	double PQCost;
-	std::vector<int> currentPath;
 
 	bool friend operator<(const SearchNode& n0, const SearchNode& n1) {
 		return n0.PQCost > n1.PQCost;

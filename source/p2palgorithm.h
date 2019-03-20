@@ -7,21 +7,6 @@ class P2PAlgorithm;
 #include <vector>
 #include <queue>
 
-class VisitNode {
-public:
-	int nodeID;
-	int totalCost;
-	std::vector<int> path;
-
-	bool operator==(VisitNode& other) {
-		return nodeID == other.nodeID;
-	}
-	
-	bool operator==(int id) {
-		return nodeID == id;
-	}
-};
-
 class P2PAlgorithm : public Algorithm {
 private:
 	char m_name[2048];
@@ -29,7 +14,9 @@ private:
 protected:
 	std::priority_queue<SearchNode> m_Q;
 	std::vector<int> m_shortestPath;
-	std::vector<VisitNode> m_visited;
+	int* m_predecessors;
+	bool* m_visited;
+	double* m_costs;
 	int m_start;
 	int m_end;
 	int m_nodesVisited;
@@ -42,11 +29,15 @@ protected:
 	Graph* m_graph;
 	NodeColors m_colors;
 
-	bool visitNode(SearchNode& cur, std::vector<VisitNode>& visited, int end);
+	bool visitNode(SearchNode& cur, bool* visited, int* predecessors, 
+			double* costs, int end);
 
 	void expandSearchFront(SearchNode& cur,
-		std::vector<Edge>& edges, std::vector<VisitNode>& visited,
+		std::vector<Edge>& edges, bool* visited, double* costs,
 		std::priority_queue<SearchNode>& Q, int start, int end);
+
+	std::vector<int> constructPath(int* predecessors, int start, int end);
+
 public:
 	P2PAlgorithm(const char* name, costFunction_t costFunc, NodeColors colors);
 
@@ -73,5 +64,4 @@ public:
 	void drawPath(sf::RenderWindow* window, float nodeSize);
 };
 
-bool wasVisited(std::vector<VisitNode>& nodes, int id);
 

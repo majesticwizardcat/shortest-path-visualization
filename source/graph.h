@@ -41,7 +41,7 @@ public:
 	int to;
 	double weight;
 
-	Edge(int to, int weight) : to(to), weight(weight) { }
+	Edge(int to, double weight) : to(to), weight(weight) { }
 };
 
 class Graph {
