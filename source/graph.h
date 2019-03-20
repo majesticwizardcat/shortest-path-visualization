@@ -34,6 +34,7 @@ public:
 
 	cost_unit_t distance(Node& other);
 	cost_unit_t realDistance(Node& other);
+	cost_unit_t realDistance2(Node& other);
 	cost_unit_t manhattan(Node& other);
 	cost_unit_t sphericalDistance(Node& other, int radius);
 };

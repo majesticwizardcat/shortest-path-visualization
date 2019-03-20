@@ -54,6 +54,10 @@ cost_unit_t Node::realDistance(Node& other) {
 	return sqrt(pow(rx - other.rx, 2) + pow(ry - other.ry, 2));
 }
 
+cost_unit_t Node::realDistance2(Node& other) {
+	return pow(rx - other.rx, 2) + pow(ry - other.ry, 2);
+}
+
 cost_unit_t Node::manhattan(Node& other) {
 	return abs(rx - other.rx) + abs(ry - other.ry);
 }
