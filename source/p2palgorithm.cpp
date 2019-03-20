@@ -29,7 +29,7 @@ RunStats P2PAlgorithm::runFull(Graph* g, int start, int end) {
 
 	auto stopTime = std::chrono::high_resolution_clock::now();
 
-	stats.time = std::chrono::duration_cast<std::chrono::seconds>(stopTime - startTime);
+	stats.time = std::chrono::duration_cast<time_unit_t>(stopTime - startTime);
 	stats.nodesVisited = m_nodesVisited;
 	stats.pathCost = m_shortestPathCost;
 	stats.pathNodes = m_shortestPath.size();

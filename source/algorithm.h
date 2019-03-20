@@ -12,6 +12,8 @@ typedef double (* costFunction_t)(double searchNodeCost, Node current, Node star
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+typedef std::chrono::milliseconds time_unit_t;
+
 class SearchNode {
 public:
 	int graphNodeID;
@@ -36,14 +38,14 @@ public:
 
 class RunStats {
 public:
-	std::chrono::seconds time;
+	time_unit_t time;
 	int nodesVisited;
 	int pathNodes;
 
 	double pathCost;
 
 	void print() {
-		std::cout << "Time: " << time.count() << " sec, "
+		std::cout << "Time: " << time.count() << " ms, "
 			<< "Nodes visited: " << nodesVisited << ", "
 			<< "Path cost: " << pathCost << ", "
 			<< "Path nodes: " << pathNodes << std::endl;
