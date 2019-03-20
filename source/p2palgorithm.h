@@ -16,7 +16,7 @@ protected:
 	std::vector<int> m_shortestPath;
 	int* m_predecessors;
 	bool* m_visited;
-	double* m_costs;
+	cost_unit_t* m_costs;
 	int m_start;
 	int m_end;
 	int m_nodesVisited;
@@ -30,10 +30,10 @@ protected:
 	NodeColors m_colors;
 
 	bool visitNode(SearchNode& cur, bool* visited, int* predecessors, 
-			double* costs, int end);
+			cost_unit_t* costs, int end);
 
 	void expandSearchFront(SearchNode& cur,
-		std::vector<Edge>& edges, bool* visited, double* costs,
+		std::vector<Edge>& edges, bool* visited, cost_unit_t* costs,
 		std::priority_queue<SearchNode>& Q, int start, int end);
 
 	std::vector<int> constructPath(int* predecessors, int start, int end);

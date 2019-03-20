@@ -7,7 +7,7 @@ protected:
 	std::priority_queue<SearchNode> m_endQ;
 	bool* m_endVisited;
 	int* m_endPredecessors;
-	double* m_endCosts;
+	cost_unit_t* m_endCosts;
 
 	void finalize();
 

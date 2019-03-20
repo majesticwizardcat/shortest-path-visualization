@@ -46,21 +46,21 @@ bool Node::hasInvertedEdge(Edge& e) {
 	return false;
 }
 
-double Node::distance(Node& other) {
+cost_unit_t Node::distance(Node& other) {
 	return sqrt(pow(x - other.x, 2) + pow(y - other.y, 2));
 }
 
-double Node::realDistance(Node& other) {
+cost_unit_t Node::realDistance(Node& other) {
 	return sqrt(pow(rx - other.rx, 2) + pow(ry - other.ry, 2));
 }
 
-double Node::manhattan(Node& other) {
+cost_unit_t Node::manhattan(Node& other) {
 	return abs(rx - other.rx) + abs(ry - other.ry);
 }
 
-double Node::sphericalDistance(Node& other, int radius) {
-	double dl = abs(rx - other.rx);
-	double ds = acos(sin(ry) * sin(other.ry) + cos(ry) * cos(other.ry) * cos(dl));
+cost_unit_t Node::sphericalDistance(Node& other, int radius) {
+	cost_unit_t dl = abs(rx - other.rx);
+	cost_unit_t ds = acos(sin(ry) * sin(other.ry) + cos(ry) * cos(other.ry) * cos(dl));
 	return radius * ds;
 }
 

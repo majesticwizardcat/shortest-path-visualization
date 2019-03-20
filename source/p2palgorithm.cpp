@@ -47,8 +47,8 @@ void P2PAlgorithm::startRunning(Graph* g, int start, int end) {
 
 	m_predecessors = new int[g->getNodes()];
 	memset(m_predecessors, -1, sizeof(int) * g->getNodes());
-	m_costs = new double[g->getNodes()];
-	memset(m_costs, 0, sizeof(double) * g->getNodes());
+	m_costs = new cost_unit_t[g->getNodes()];
+	memset(m_costs, 0, sizeof(cost_unit_t) * g->getNodes());
 	m_visited = new bool[g->getNodes()];
 	memset(m_visited, false, sizeof(bool) * g->getNodes());
 
@@ -56,6 +56,7 @@ void P2PAlgorithm::startRunning(Graph* g, int start, int end) {
 	n.graphNodeID = start;
 	m_costs[n.graphNodeID] = 0;
 	n.PQCost = 0;
+	n.totalCost = 0;
 	m_Q.push(n);
 	m_curNodeVisiting = start;
 	m_lastNodeVisited = start;
@@ -74,7 +75,7 @@ std::vector<int> P2PAlgorithm::constructPath(int* predecessors, int start, int e
 }
 
 bool P2PAlgorithm::visitNode(SearchNode& cur, bool* visited,
-		int* predecessors, double* costs, int end) {
+		int* predecessors, cost_unit_t* costs, int end) {
 
 	if (!visited[cur.graphNodeID]) {
 		visited[cur.graphNodeID] = true;
@@ -98,14 +99,14 @@ bool P2PAlgorithm::visitNode(SearchNode& cur, bool* visited,
 }
 
 void P2PAlgorithm::expandSearchFront(SearchNode& cur,
-		std::vector<Edge>& edges, bool* visited, double* costs,
+		std::vector<Edge>& edges, bool* visited, cost_unit_t* costs,
 		std::priority_queue<SearchNode>& Q, int start, int end) {
 
 	for (Edge& e : edges) {
 		if (!visited[e.to]) {
 			SearchNode sn;
 			sn.graphNodeID = e.to;
-			sn.totalCost = costs[cur.graphNodeID] + e.weight;
+			sn.totalCost = cur.totalCost + e.weight;
 			sn.PQCost = m_costFunc(sn.totalCost, m_graph->getNode(e.to),
 					m_graph->getNode(start), m_graph->getNode(end));
 			sn.predecessor = cur.graphNodeID;

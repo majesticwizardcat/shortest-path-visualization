@@ -5,7 +5,7 @@ class Algorithm;
 
 #include "graph.h"
 
-typedef double (* costFunction_t)(double searchNodeCost, Node current, Node start, Node end);
+typedef cost_unit_t (* costFunction_t)(cost_unit_t searchNodeCost, Node current, Node start, Node end);
 
 #include <iostream>
 #include <chrono>
@@ -18,8 +18,8 @@ class SearchNode {
 public:
 	int graphNodeID;
 	int predecessor;
-	double totalCost;
-	double PQCost;
+	cost_unit_t totalCost;
+	cost_unit_t PQCost;
 
 	bool friend operator<(const SearchNode& n0, const SearchNode& n1) {
 		return n0.PQCost > n1.PQCost;
@@ -42,7 +42,7 @@ public:
 	int nodesVisited;
 	int pathNodes;
 
-	double pathCost;
+	cost_unit_t pathCost;
 
 	void print() {
 		std::cout << "Time: " << time.count() << " ms, "

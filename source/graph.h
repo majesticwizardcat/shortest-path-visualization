@@ -3,6 +3,8 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+typedef int cost_unit_t;
+
 class Node;
 class Edge;
 class Graph;
@@ -30,18 +32,18 @@ public:
 	bool hasEdge(Edge& e);
 	bool hasInvertedEdge(Edge& e);
 
-	double distance(Node& other);
-	double realDistance(Node& other);
-	double manhattan(Node& other);
-	double sphericalDistance(Node& other, int radius);
+	cost_unit_t distance(Node& other);
+	cost_unit_t realDistance(Node& other);
+	cost_unit_t manhattan(Node& other);
+	cost_unit_t sphericalDistance(Node& other, int radius);
 };
 
 class Edge {
 public:
 	int to;
-	double weight;
+	cost_unit_t weight;
 
-	Edge(int to, double weight) : to(to), weight(weight) { }
+	Edge(int to, cost_unit_t weight) : to(to), weight(weight) { }
 };
 
 class Graph {

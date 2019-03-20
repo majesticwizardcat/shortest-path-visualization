@@ -12,10 +12,11 @@ void BDAlgorithm::startRunning(Graph* g, int start, int end) {
 	memset(m_endVisited, false, sizeof(bool) * g->getNodes());
 	m_endPredecessors = new int[g->getNodes()];
 	memset(m_endPredecessors, -1, sizeof(int) * g->getNodes());
-	m_endCosts = new double[g->getNodes()];
-	memset(m_endCosts, 0, sizeof(double) * g->getNodes());
+	m_endCosts = new cost_unit_t[g->getNodes()];
+	memset(m_endCosts, 0, sizeof(cost_unit_t) * g->getNodes());
 	SearchNode n;
 	n.graphNodeID = end;
+	n.totalCost = 0;
 	m_endCosts[n.graphNodeID] = 0;
 	n.PQCost = 0;
 	m_endQ.push(n);

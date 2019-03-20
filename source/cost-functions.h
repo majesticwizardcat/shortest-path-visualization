@@ -2,15 +2,15 @@
 
 #include "graph.h"
 
-double dijkstra(double searchNodeCost, Node current, Node start, Node end) {
+cost_unit_t dijkstra(cost_unit_t searchNodeCost, Node current, Node start, Node end) {
 	return searchNodeCost;
 }
 
-double astar(double searchNodeCost, Node current, Node start, Node end) {
+cost_unit_t astar(cost_unit_t searchNodeCost, Node current, Node start, Node end) {
 	return searchNodeCost + current.realDistance(end);
 }
 
-double greedy(double searchNodeCost, Node current, Node start, Node end) {
+cost_unit_t greedy(cost_unit_t searchNodeCost, Node current, Node start, Node end) {
 	return current.realDistance(end);
 }
 
