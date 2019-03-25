@@ -17,6 +17,7 @@ int main(int args, char** argv) {
 		std::cout << "rendergraph [nodesfile] [edgesfile] "
 			<< "[windowwidth] [windowheight] [nodespixelsize] " 
 			<< " [startnodeid] [endnodeid]" << std::endl;
+		return -1;
 	}
 
 	Graph g(argv[1], argv[2]);
@@ -25,7 +26,7 @@ int main(int args, char** argv) {
 	float nodePixels = atof(argv[5]);
 	int start = atoi(argv[6]) - 1;
 	int end = atoi(argv[7]) - 1;
-	int numOfAlgs = 4;
+	int numOfAlgs = 3;
 	bool runFull = false;
 	bool render = true;
 
@@ -44,13 +45,11 @@ int main(int args, char** argv) {
 	NodeColors dcolors(sf::Color(40, 50, 125), sf::Color(130, 145, 230), sf::Color(170, 180, 230));
 	NodeColors ascolors(sf::Color(155, 100, 100), sf::Color(255, 150, 150), sf::Color(255, 200, 120));
 	NodeColors bdcolors(sf::Color(120, 155, 20), sf::Color(220, 250, 120), sf::Color(250, 255, 150));
-	NodeColors bdastarcolors(sf::Color(120, 0, 100), sf::Color(220, 0, 220), sf::Color(220, 50, 220));
 
 	Algorithm** algorithms = new Algorithm*[numOfAlgs];
 	algorithms[0] = new P2PAlgorithm("Dijkstra", dijkstra, dcolors);
 	algorithms[1] = new P2PAlgorithm("A*", astar, ascolors);
 	algorithms[2] = new BDAlgorithm("BD-Dijkstra", dijkstra, bdcolors);
-	algorithms[3] = new BDAlgorithm("BD-A*", astar, bdastarcolors);
 
 	if (runFull) {
 		for (int i = 0; i < numOfAlgs; ++i) {
